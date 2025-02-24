@@ -1,42 +1,18 @@
-package fz.chitfund.entity;
+package fz.chitfund.dto;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
-@Entity
-@Table(name = "chit_groups")
-public class ChitGroup {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
+public class ChitGroupRequest {
     private String groupName;
     private BigDecimal chitAmount;
     private Integer duration;
     private Integer totalMembers;
     private LocalDate startDate;
-    private String status;
     private BigDecimal commission;
-    
-    @ManyToOne
-    @JoinColumn(name = "agent_id")
-    private Users agent;
-    
-    @OneToMany(mappedBy = "chitGroup", cascade = CascadeType.ALL)
-    private Set<Subscription> subscriptions = new HashSet<>();
+    private Long agentId;
 
     // Getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getGroupName() {
         return groupName;
     }
@@ -77,14 +53,6 @@ public class ChitGroup {
         this.startDate = startDate;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public BigDecimal getCommission() {
         return commission;
     }
@@ -93,19 +61,11 @@ public class ChitGroup {
         this.commission = commission;
     }
 
-    public Users getAgent() {
-        return agent;
+    public Long getAgentId() {
+        return agentId;
     }
 
-    public void setAgent(Users agent) {
-        this.agent = agent;
-    }
-
-    public Set<Subscription> getSubscriptions() {
-        return subscriptions;
-    }
-
-    public void setSubscriptions(Set<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
+    public void setAgentId(Long agentId) {
+        this.agentId = agentId;
     }
 } 
