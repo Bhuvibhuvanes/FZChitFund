@@ -25,10 +25,10 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.findById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<?> createPayment(@RequestBody Payment payment) {
-        return ResponseEntity.ok(paymentService.save(payment));
-    }
+    // @PostMapping
+    // public ResponseEntity<?> createPayment(@RequestBody Payment payment) {
+    //     return ResponseEntity.ok(paymentService.save(payment));
+    // }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePayment(@PathVariable Long id, @RequestBody Payment payment) {
@@ -39,5 +39,13 @@ public class PaymentController {
     public ResponseEntity<?> deletePayment(@PathVariable Long id) {
         paymentService.delete(id);
         return ResponseEntity.ok().build();
+    }
+    @PostMapping("/{groupId}/{memberId}")
+    public ResponseEntity<?> processPayment(
+        @PathVariable Long groupId, 
+        @PathVariable Long memberId, 
+        @RequestBody Payment payment
+    ) {
+        return ResponseEntity.ok(paymentService.save(payment, groupId, memberId));
     }
 } 

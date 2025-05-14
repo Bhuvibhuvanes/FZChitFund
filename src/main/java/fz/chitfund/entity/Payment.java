@@ -77,4 +77,14 @@ public class Payment {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public void setChitGroup(ChitGroup chitGroup) {
+       
+        throw new UnsupportedOperationException("Unimplemented method 'setChitGroup'");
+    }
+
+    public void setChitMember(ChitMember chitMember) {
+        
+        throw new UnsupportedOperationException("Unimplemented method 'setChitMember'");
+    }
 } 
