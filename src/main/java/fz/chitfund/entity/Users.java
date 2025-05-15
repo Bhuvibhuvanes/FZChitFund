@@ -21,6 +21,9 @@ public class Users {
 	private String username;
 	private String password;
 
+	private String resetToken;
+	private java.util.Date resetTokenExpiry;
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Role> roles = new HashSet<>();// many users have multible role
 
@@ -46,6 +49,22 @@ public class Users {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getResetToken() {
+		return resetToken;
+	}
+
+	public void setResetToken(String resetToken) {
+		this.resetToken = resetToken;
+	}
+
+	public java.util.Date getResetTokenExpiry() {
+		return resetTokenExpiry;
+	}
+
+	public void setResetTokenExpiry(java.util.Date resetTokenExpiry) {
+		this.resetTokenExpiry = resetTokenExpiry;
 	}
 
 	public Set<Role> getRoles() {

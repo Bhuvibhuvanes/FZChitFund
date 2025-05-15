@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fz.chitfund.dto.RegisterRequest;
+import fz.chitfund.dto.ForgotPasswordRequest;
 import fz.chitfund.entity.Role;
 import fz.chitfund.entity.Users;
 import fz.chitfund.repository.RoleRepository;
@@ -13,6 +14,8 @@ import fz.chitfund.security.JwtUtil;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Map;
+import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -100,4 +103,62 @@ public class AuthController {
 		}
 	}
 
+	@PostMapping("/forgot-password")
+	public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+		if (request.getUsername() == null || request.getUsername().isEmpty()) {
+			return ResponseEntity.badRequest().body(Map.of("error", "Username is required"));
+		}
+
+		Optional<Users> userOpt = userRepository.findByUsername(request.getUsername());
+		if (userOpt.isEmpty()) {
+			return ResponseEntity.badRequest().body(Map.of("error", "User not found"));
+		}
+
+		Users user = userOpt.get();
+		// Generate a random token
+		String resetToken = java.util.UUID.randomUUID().toString();
+		// Set token expiry to 1 hour from now
+		Date expiryDate = new Date(System.currentTimeMillis() + 3600000); // 1 hour
+
+		user.setResetToken(resetToken);
+		user.setResetTokenExpiry(expiryDate);
+		userRepository.save(user);
+
+		// In a real application, you would send this token via email
+		// For now, we'll just return it in the response
+		return ResponseEntity.ok(Map.of(
+			"message", "Password reset token generated",
+			"resetToken", resetToken
+		));
+	}
+
+	@PostMapping("/reset-password")
+	public ResponseEntity<?> resetPassword(@RequestBody ForgotPasswordRequest request) {
+		if (request.getUsername() == null || request.getResetToken() == null || request.getNewPassword() == null) {
+			return ResponseEntity.badRequest().body(Map.of("error", "All fields are required"));
+		}
+
+		Optional<Users> userOpt = userRepository.findByUsername(request.getUsername());
+		if (userOpt.isEmpty()) {
+			return ResponseEntity.badRequest().body(Map.of("error", "User not found"));
+		}
+
+		Users user = userOpt.get();
+		if (user.getResetToken() == null || !user.getResetToken().equals(request.getResetToken())) {
+			return ResponseEntity.badRequest().body(Map.of("error", "Invalid reset token"));
+		}
+
+		if (user.getResetTokenExpiry() == null || user.getResetTokenExpiry().before(new Date())) {
+			return ResponseEntity.badRequest().body(Map.of("error", "Reset token has expired"));
+		}
+
+		// Update password
+		user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+		// Clear reset token
+		user.setResetToken(null);
+		user.setResetTokenExpiry(null);
+		userRepository.save(user);
+
+		return ResponseEntity.ok(Map.of("message", "Password has been reset successfully"));
+	}
 }
