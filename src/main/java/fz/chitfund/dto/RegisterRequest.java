@@ -4,6 +4,7 @@ import java.util.Set;
 
 public class RegisterRequest {
 	private String username;
+	private String email;
 	private String password;
 	private Set<String> roles;
 
@@ -13,14 +14,23 @@ public class RegisterRequest {
 	}
 
 	// Parameterized constructor
-	public RegisterRequest(String username, String password, Set<String> roles) {
+	public RegisterRequest(String username, String email, String password, Set<String> roles) {
 
 		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.roles = roles;
 	}
 
 	// Getters and Setters
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getUsername() {
 		return username;
 	}

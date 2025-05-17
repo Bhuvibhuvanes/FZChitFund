@@ -19,6 +19,7 @@ public class Users {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String username;
+	private String email;
 	private String password;
 
 	private String resetToken;
@@ -33,6 +34,14 @@ public class Users {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getUsername() {

@@ -2,8 +2,17 @@ package fz.chitfund.dto;
 
 public class ForgotPasswordRequest {
     private String username;
+    private String email;
     private String resetToken;
     private String newPassword;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getUsername() {
         return username;
