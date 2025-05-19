@@ -35,8 +35,8 @@ public class AuthController {
     private static final String RESET_TOKEN_EXPIRY = "1h";
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        String email = request.getEmail();
         if (email == null || email.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Email is required"));
         }
