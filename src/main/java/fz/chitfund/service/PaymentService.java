@@ -35,7 +35,7 @@ public class PaymentService {
             .orElseThrow(() -> new RuntimeException("Payment not found"));
     }
 
-    public Payment save(Payment payment,Long groupId,Long memberId) {
+    public Payment save(Long memberId,Long groupId,Payment payment) {
         ChitGroup chitGroup = chitGroupRepository.findById(groupId)
             .orElseThrow(() -> new RuntimeException("ChitGroup not found"));
         ChitMember chitMember = chitMemberRepository.findById(memberId)
@@ -57,5 +57,10 @@ public class PaymentService {
 
     public void delete(Long id) {
         paymentRepository.deleteById(id);
+    }
+
+    public Object save(Payment payment, Long groupId, Long memberId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
 } 
